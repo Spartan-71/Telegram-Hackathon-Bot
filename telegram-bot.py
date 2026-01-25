@@ -870,7 +870,7 @@ async def post_init(application: Application) -> None:
     logger.info("Background scheduler started")
 
 
-def main():
+async def main():
     """Start the bot."""
     token = os.getenv("TELEGRAM_TOKEN")
     if not token:
@@ -896,11 +896,16 @@ def main():
     # Add callback query handler
     application.add_handler(CallbackQueryHandler(button_callback))
     
+    # Initialize and start the bot
+    await application.initialize()
+    await application.start()
+    await application.updater.start_polling(allowed_updates=Update.ALL_TYPES)
+    
     logger.info("Bot started successfully!")
     
-    # Run the bot
-    application.run_polling(allowed_updates=Update.ALL_TYPES)
+    # Keep the process alive
+    await asyncio.Event().wait()
 
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
