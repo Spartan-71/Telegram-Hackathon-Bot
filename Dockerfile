@@ -27,3 +27,9 @@ RUN uv pip install --system -e .
 
 # Copy project files
 COPY . .
+
+# Make start script executable
+RUN chmod +x start.sh
+
+# Default Entrypoint
+ENTRYPOINT ["./start.sh"]
