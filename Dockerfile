@@ -27,3 +27,6 @@ RUN uv pip install --system -e .
 
 # Copy project files
 COPY . .
+
+# Default Entrypoint
+ENTRYPOINT ["python", "telegram-bot.py"]
