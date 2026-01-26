@@ -3,7 +3,7 @@ import logging
 import asyncio
 from datetime import datetime
 
-from telegram import Bot
+from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.constants import ParseMode
 from telegram.error import TelegramError
 from dotenv import load_dotenv
@@ -31,28 +31,20 @@ def format_hackathon_message(hackathon):
     random_emoji = random.choice(emojis)
     
     text = f"{random_emoji} <b>{hackathon.title}</b>\n\n"
-    text += f"📅 <b>Duration:</b> {hackathon.start_date.strftime('%B %d')} - {hackathon.end_date.strftime('%B %d, %Y')}\n"
-    text += f"📍 <b>Location:</b> {hackathon.location}\n"
-    text += f"💻 <b>Mode:</b> {hackathon.mode}\n"
-    text += f"✅ <b>Status:</b> {hackathon.status}\n"
-    text += f"🌐 <b>Platform:</b> {hackathon.source}\n"
+    text += f"<b>Duration:</b> {hackathon.start_date.strftime('%B %d')} - {hackathon.end_date.strftime('%B %d, %Y')}\n"
+    text += f"<b>Location:</b> {hackathon.location}\n"
+    text += f"<b>Mode:</b> {hackathon.mode}\n"
+    text += f"<b>Status:</b> {hackathon.status}\n"
+    text += f"<b>Platform:</b> {hackathon.source}\n\n"
     
     if hackathon.prize_pool:
-        text += f"🏆 <b>Prizes:</b> {hackathon.prize_pool}\n"
+        text += f"<b>Prizes:</b>\n{hackathon.prize_pool}\n\n"
     if hackathon.team_size:
-        text += f"👥 <b>Team Size:</b> {hackathon.team_size}\n"
+        text += f"<b>Team Size:</b> {hackathon.team_size}\n"
     if hackathon.eligibility:
-        text += f"✔️ <b>Eligibility:</b> {hackathon.eligibility}\n"
+        text += f"<b>Eligibility:</b> {hackathon.eligibility}\n"
     
-    if hackathon.tags:
-        tags = hackathon.tags.split(',')
-        if tags:
-            text += f"\n🏷️ <b>Tags:</b> {', '.join(tags[:5])}\n"
-    
-    if hackathon.url:
-        text += f"\n🔗 <a href='{hackathon.url}'>Register Now</a>"
-    
-    return text, hackathon.banner_url
+    return text, hackathon.banner_url, hackathon.url
 
 
 async def send_to_channel(bot: Bot, channel_id: str, new_hackathons):
@@ -66,7 +58,14 @@ async def send_to_channel(bot: Bot, channel_id: str, new_hackathons):
     
     for hackathon in new_hackathons:
         try:
-            text, photo_url = format_hackathon_message(hackathon)
+            text, photo_url, hackathon_url = format_hackathon_message(hackathon)
+            
+            # Create inline keyboard with Register Now button
+            keyboard = None
+            if hackathon_url:
+                keyboard = InlineKeyboardMarkup([
+                    [InlineKeyboardButton("View Details", url=hackathon_url)]
+                ])
             
             if photo_url:
                 # Send photo with caption
@@ -74,7 +73,8 @@ async def send_to_channel(bot: Bot, channel_id: str, new_hackathons):
                     chat_id=channel_id,
                     photo=photo_url,
                     caption=text,
-                    parse_mode=ParseMode.HTML
+                    parse_mode=ParseMode.HTML,
+                    reply_markup=keyboard
                 )
             else:
                 # Send text message
@@ -82,7 +82,8 @@ async def send_to_channel(bot: Bot, channel_id: str, new_hackathons):
                     chat_id=channel_id,
                     text=text,
                     parse_mode=ParseMode.HTML,
-                    disable_web_page_preview=False
+                    disable_web_page_preview=False,
+                    reply_markup=keyboard
                 )
             
             success_count += 1

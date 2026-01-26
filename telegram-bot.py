@@ -68,22 +68,22 @@ def format_hackathon_message(hackathon):
     random_emoji = random.choice(emojis)
     
     text = f"{random_emoji} <b>{hackathon.title}</b>\n\n"
-    text += f"📅 <b>Duration:</b> {hackathon.start_date.strftime('%B %d')} - {hackathon.end_date.strftime('%B %d, %Y')}\n"
-    text += f"📍 <b>Location:</b> {hackathon.location}\n"
-    text += f"💻 <b>Mode:</b> {hackathon.mode}\n"
-    text += f"✅ <b>Status:</b> {hackathon.status}\n"
+    text += f"<b>Duration:</b> {hackathon.start_date.strftime('%B %d')} - {hackathon.end_date.strftime('%B %d, %Y')}\n"
+    text += f"<b>Location:</b> {hackathon.location}\n"
+    text += f"<b>Mode:</b> {hackathon.mode}\n"
+    text += f"<b>Status:</b> {hackathon.status}\n\n"
     
     if hackathon.prize_pool:
-        text += f"🏆 <b>Prizes:</b> {hackathon.prize_pool}\n"
+        text += f"<b>Prizes:</b>\n{hackathon.prize_pool}\n\n"
     if hackathon.team_size:
-        text += f"👥 <b>Team Size:</b> {hackathon.team_size}\n"
+        text += f"<b>Team Size:</b> {hackathon.team_size}\n"
     if hackathon.eligibility:
-        text += f"✔️ <b>Eligibility:</b> {hackathon.eligibility}\n"
+        text += f"<b>Eligibility:</b> {hackathon.eligibility}\n"
     
     # Create inline keyboard
     keyboard = []
     if hackathon.url:
-        keyboard.append([InlineKeyboardButton("🚀 View Details", url=hackathon.url)])
+        keyboard.append([InlineKeyboardButton("View Details", url=hackathon.url)])
     
     reply_markup = InlineKeyboardMarkup(keyboard) if keyboard else None
     
