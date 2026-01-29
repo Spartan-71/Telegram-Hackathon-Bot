@@ -268,7 +268,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("🔍 Search Hackathons", switch_inline_query_current_chat="")],
         [InlineKeyboardButton("📖 Help", callback_data="help")],
-        [InlineKeyboardButton("⭐ Star on GitHub", url="https://github.com/Spartan-71/Discord-Hackathon-Bot")]
+        [InlineKeyboardButton("⭐ Star on GitHub", url="https://github.com/Spartan-71/Telegram-Hackathon-Bot")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
@@ -302,8 +302,8 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     
     keyboard = [
-        [InlineKeyboardButton("⭐ Star on GitHub", url="https://github.com/Spartan-71/Discord-Hackathon-Bot")],
-        [InlineKeyboardButton("🐛 Report Bug", url="https://github.com/Spartan-71/Discord-Hackathon-Bot/issues")]
+        [InlineKeyboardButton("⭐ Star on GitHub", url="https://github.com/Spartan-71/Telegram-Hackathon-Bot")],
+        [InlineKeyboardButton("🐛 Report Bug", url="https://github.com/Spartan-71/Telegram-Hackathon-Bot/issues")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
@@ -326,8 +326,8 @@ async def about_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     
     keyboard = [
-        [InlineKeyboardButton("⭐ Star on GitHub", url="https://github.com/Spartan-71/Discord-Hackathon-Bot")],
-        [InlineKeyboardButton("🐛 Report Bug", url="https://github.com/Spartan-71/Discord-Hackathon-Bot/issues")],
+        [InlineKeyboardButton("⭐ Star on GitHub", url="https://github.com/Spartan-71/Telegram-Hackathon-Bot")],
+        [InlineKeyboardButton("🐛 Report Bug", url="https://github.com/Spartan-71/Telegram-Hackathon-Bot/issues")],
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
@@ -809,7 +809,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             
             keyboard = [
-                [InlineKeyboardButton("⭐ Star on GitHub", url="https://github.com/Spartan-71/Discord-Hackathon-Bot")]
+                [InlineKeyboardButton("⭐ Star on GitHub", url="https://github.com/Spartan-71/Telegram-Hackathon-Bot")]
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
             
