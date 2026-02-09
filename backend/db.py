@@ -1,6 +1,7 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
 import os
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
@@ -15,9 +16,7 @@ engine = create_engine(
     pool_size=10,
     max_overflow=20,
     echo=False,  # Set to True for debugging SQL queries
-    connect_args={
-        "options": "-c timezone=utc -c statement_timeout=60000"
-    }
+    connect_args={"options": "-c timezone=utc -c statement_timeout=60000"},
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

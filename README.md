@@ -79,7 +79,7 @@ The channel bot automatically posts ALL new hackathons to a Telegram channel wit
 
 HackRadar sends visually rich notifications including:
 *   **Title**: Event name with a random fun emoji (🎉, 🚀, 💡, 🔥, 💻, 🏆, etc.).
-*   **Core Details**: 
+*   **Core Details**:
     *   Duration (Start Date - End Date)
     *   Location
     *   Mode (Online/In-person/Hybrid)
@@ -106,10 +106,10 @@ HackRadar sends visually rich notifications including:
     ```bash
     # Start both interactive and channel bots
     docker compose up -d
-    
+
     # Or start only interactive bot
     docker compose up -d db telegram-bot
-    
+
     # Or start only channel bot
     docker compose up -d db telegram-channel-bot
     ```
@@ -150,10 +150,10 @@ HackRadar sends visually rich notifications including:
     ```bash
     # Interactive bot
     uv run python telegram-bot.py
-    
+
     # Or channel bot
     uv run python telegram-channel-bot.py
-    
+
     # Or both (in separate terminals)
     ```
 
@@ -162,7 +162,7 @@ HackRadar sends visually rich notifications including:
 ### Components Overview
 HackRadar is built with a modular architecture consisting of several key components:
 
-1. **Interactive Bot (`telegram-bot.py`)**: 
+1. **Interactive Bot (`telegram-bot.py`)**:
    - Handles all user interactions using python-telegram-bot
    - Implements commands and inline keyboards for interactive setup
    - Manages background tasks using APScheduler (every 12 hours)
@@ -176,7 +176,7 @@ HackRadar is built with a modular architecture consisting of several key compone
    - Runs on same 6-hour schedule
    - Perfect for public announcement channels
 
-3. **Platform Adapters (`adapters/`)**: 
+3. **Platform Adapters (`adapters/`)**:
    - Each adapter is responsible for fetching data from a specific platform
    - Supported platforms:
      - **Devfolio** (`devfolio.py`): Uses GraphQL API
@@ -188,7 +188,7 @@ HackRadar is built with a modular architecture consisting of several key compone
      - **Hack2Skill** (`hack2skill.py`): REST API integration
    - Normalizes data from different sources into a unified `Hackathon` schema
 
-4. **Database Layer (`backend/`)**: 
+4. **Database Layer (`backend/`)**:
    - **Models** (`models.py`): SQLAlchemy ORM models for:
      - `HackathonDB`: Stores all hackathon data
      - `GuildConfig`: Stores group-specific preferences (chat ID, platforms, themes, pause state)
@@ -196,7 +196,7 @@ HackRadar is built with a modular architecture consisting of several key compone
    - **CRUD Operations** (`crud.py`): Database query functions for searching, filtering, and managing data
    - **Schemas** (`schemas.py`): Pydantic models for data validation
 
-5. **Fetch & Store Engine (`fetch_and_store.py`)**: 
+5. **Fetch & Store Engine (`fetch_and_store.py`)**:
    - Orchestrates the data fetching process across all adapters
    - Detects new hackathons by comparing against existing database records
    - Returns only newly added events to trigger notifications
