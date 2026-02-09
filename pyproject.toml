@@ -21,5 +21,15 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pre-commit>=4.2.0",
     "pytest>=8.4.2",
+    "ruff>=0.12.8",
 ]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E402", "E501", "F841"]
