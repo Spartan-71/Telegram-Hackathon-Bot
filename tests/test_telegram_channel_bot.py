@@ -7,6 +7,7 @@ from types import SimpleNamespace
 from unittest.mock import AsyncMock
 
 import pytest
+
 pytest.importorskip("sqlalchemy")
 from sqlalchemy.sql.schema import MetaData
 
@@ -17,7 +18,10 @@ def load_channel_bot_module():
     # telegram-channel-bot imports fetch_and_store, which runs create_all at import time.
     # Patch it so tests do not require a live database server.
     sys.modules.pop("fetch_and_store", None)
-    monkeypatched_create_all = lambda _self, bind=None: None
+
+    def monkeypatched_create_all(_self, bind=None):
+        return None
+
     original_create_all = MetaData.create_all
     MetaData.create_all = monkeypatched_create_all
 
