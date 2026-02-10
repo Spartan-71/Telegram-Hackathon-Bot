@@ -1,4 +1,4 @@
-name: Build, Push and Deploy HackRadar
+name: CI - Build and Push Docker Image
 
 on:
   push:
@@ -32,8 +32,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: test
-    outputs:
-      image_tag: ${{ steps.meta.outputs.image_tag }}
 
     steps:
       - name: Checkout repository
@@ -48,10 +46,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Set image tag output
-        id: meta
-        run: echo "image_tag=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -61,31 +55,3 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/hackradar-telegram-bot:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/hackradar-telegram-bot:${{ github.sha }}
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1.2.0
-        env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-          IMAGE_TAG: ${{ needs.build.outputs.image_tag }}
-          EC2_APP_DIR: ${{ secrets.EC2_APP_DIR }}
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          port: ${{ secrets.EC2_PORT }}
-          envs: DOCKERHUB_USERNAME,DOCKERHUB_TOKEN,IMAGE_TAG,EC2_APP_DIR
-          script_stop: true
-          script: |
-            set -e
-            APP_DIR="${EC2_APP_DIR}"
-            cd "$APP_DIR"
-            echo "$DOCKERHUB_TOKEN" | sudo docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            export IMAGE_TAG="$IMAGE_TAG"
-            sudo docker compose pull
-            sudo docker compose up -d --remove-orphans
-            sudo docker image prune -f
