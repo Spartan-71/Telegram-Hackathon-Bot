@@ -3,7 +3,7 @@ name: Deploy to EC2 Instance
 on:
   workflow_run:
     workflows:
-      - CI - Build and Push Docker Image
+      - CI - Build, Test and Push (Main)
     types:
       - completed
   workflow_dispatch:
@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   deploy:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main') }}
     runs-on: ubuntu-latest
     environment:
       name: production
