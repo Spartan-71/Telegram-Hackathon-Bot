@@ -12,7 +12,7 @@ Thank you for showing interest in contributing to **HackRadar**! We welcome all 
    git checkout -b your-feature-name
    ```
 3. Make your changes.
-4. Run the tests and ensure everything works.
+4. Run the tests and ensure everything works (see below).
 5. Commit and push your changes:
 
    ```bash
@@ -28,6 +28,34 @@ Thank you for showing interest in contributing to **HackRadar**! We welcome all 
 * Keep your changes focused and minimal.
 * Write clear and concise commit messages.
 * If adding a new scraper, place it in the `adapters/` folder.
+
+## 🧪 Running Tests (pytest)
+
+We use `pytest` for testing. Before opening a PR, run:
+
+```bash
+uv run pytest
+```
+
+Make sure all tests pass and add tests for any new functionality where appropriate.
+
+## 🧹 Pre-commit Hooks
+
+This repo uses `pre-commit` to enforce formatting and basic quality checks.
+
+1. Install hooks (one-time):
+
+```bash
+uv run pre-commit install
+```
+
+2. Run hooks locally (optional but recommended before pushing):
+
+```bash
+uv run pre-commit run --all-files
+```
+
+CI will run these checks as well, so keeping them green locally will make your PR review smoother.
 
 
 ## 📞 Need Help?
